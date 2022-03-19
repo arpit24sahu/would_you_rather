@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'Game/GameHome.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'anim.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -41,7 +40,6 @@ class _LoginState extends State<Login> {
             children: [
               Center(),
               Container(
-                // height: h/12,
                 width: w*0.9,
                 color: Colors.transparent,
                 child: Hero(
@@ -50,7 +48,6 @@ class _LoginState extends State<Login> {
                 )
               ),
               Container(
-                // height: h/12,
                 width: w*0.8,
                 color: Colors.transparent,
                 child: Hero(
@@ -81,37 +78,7 @@ class _LoginState extends State<Login> {
                   },
                 ),
               ),
-              // Text(" "),
-              // Text(" "),
-              // Material(
-              //   shape: StadiumBorder(),
-              //   child: MaterialButton(
-              //     child: Padding(
-              //       padding: EdgeInsets.all(10),
-              //       child: Text("S H A R E", style: GoogleFonts.aladin(textStyle: TextStyle(fontWeight: FontWeight.bold,)), textScaleFactor: 1.6,),
-              //     ),
-              //     onPressed: (){
-              //       Navigator.of(context).push(
-              //           MaterialPageRoute(
-              //               builder: (context) => GameHome()
-              //           )
-              //       );
-              //     },
-              //   ),
-              // ),
               Text(" "),
-              // Material(
-              //   child: MaterialButton(
-              //     child: Text("Trying Animation"),
-              //     onPressed: (){
-              //       Navigator.of(context).push(
-              //           MaterialPageRoute(
-              //               builder: (context) => Anim()
-              //           )
-              //       );
-              //     },
-              //   ),
-              // )
             ],
           )
         ],

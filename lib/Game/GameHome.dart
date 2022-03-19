@@ -23,38 +23,13 @@ class _GameHomeState extends State<GameHome> {
 
   double _widthb = 100;
   double _widthr = 100;
+
   double _updateState(){
     setState(() {
       _widthb = (_blueClicks)/(_blueClicks+_redClicks)*0.8*w-5;
       _widthr = (_redClicks)/(_blueClicks+_redClicks)*0.8*w-5;
-      // print("width = $_width");
     });
   }
-
-
-  // Widget _blueslider(){
-  //   return Container(
-  //     height: 30,
-  //     width: 0.8*w,
-  //     color: Colors.white,
-  //     child: Padding(
-  //       padding: EdgeInsets.only(left: 2.5, right: 2.5),
-  //       child: Align(
-  //         alignment: Alignment.centerLeft,
-  //         child: AnimatedContainer(
-  //           duration: Duration(seconds: 2),
-  //           curve: Curves.decelerate,
-  //           height: 25,
-  //           width: _width,
-  //           color: Colors.green,
-  //         ),
-  //       ),
-  //     )
-  //   );
-  // }
-
-
-
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -69,13 +44,9 @@ class _GameHomeState extends State<GameHome> {
       randoms.removeAt(0);
       _total=5;
     });
-    print(randoms);
     setState(() {
       _blueText = "Loading..."; _redText = "Loading...";
     });
-    // await _firestore.collection('values').doc('stats').get().then((value){
-    //   _total = value.get('docs');
-    // });
     if (_total!=0){
       setState(() {
         show = false;
@@ -92,7 +63,6 @@ class _GameHomeState extends State<GameHome> {
           _blueClicks = _docu.get('blueClicks');
           _redClicks = _docu.get('redClicks');
           setState(() {
-
           });
         }
       });
@@ -101,40 +71,6 @@ class _GameHomeState extends State<GameHome> {
       _getNew();
     }
   }
-
-
-  // Future<void> _getNew()async{
-  //   setState(() {
-  //     _blueText = "Loading..."; _redText = "Loading...";
-  //   });
-  //   await _firestore.collection('values').doc('stats').get().then((value){
-  //     _total = value.get('docs');
-  //   });
-  //   if (_total!=0){
-  //     setState(() {
-  //       show = false;
-  //     });
-  //     await _firestore.collection('questions').where('no', isEqualTo: Random().nextInt(_total)).get().then((value)async{
-  //       if(value.size==0){
-  //         _getNew();
-  //       }
-  //       else if(value.size==1){
-  //         DocumentSnapshot _docu = value.docs.last;
-  //         _blueText = _docu.get('blue');
-  //         _redText = _docu.get('red');
-  //         _docID = _docu.get('id');
-  //         _blueClicks = _docu.get('blueClicks');
-  //         _redClicks = _docu.get('redClicks');
-  //         setState(() {
-  //
-  //         });
-  //       }
-  //     });
-  //   }
-  //   else{
-  //     _getNew();
-  //   }
-  // }
 
   Future<void> _buttonPressed(String which, String docID)async{
     show = true;
@@ -161,18 +97,14 @@ class _GameHomeState extends State<GameHome> {
   List<int> randoms = List.empty(growable: true);
 
   void _getDocsNo()async{
-    print("Gettting docs no");
     int _count;
     await _firestore.collection('values').doc('stats').get().then((value){
       _count = value.get('docs');
     });
-    print("count: $_count");
     for(int i=0; i<_count; i++){
       randoms.add(i);
     }
-    print(randoms);
     randoms.shuffle();
-    print(randoms);
     Future.delayed(Duration(milliseconds: 100), (){
       _getNew();
     });
@@ -181,13 +113,8 @@ class _GameHomeState extends State<GameHome> {
   @override
   void initState() {
     // TODO: implement initState
-    //  Firebase.initializeApp().whenComplete(() {
-    //       print("completed");
-    //       setState(() {});
-    //     });
     super.initState();
     _getDocsNo();
-    // _getNew();
   }
 
   @override
@@ -202,16 +129,8 @@ class _GameHomeState extends State<GameHome> {
     w = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        // floatingActionButton: FloatingActionButton(
-        //   child: Icon(Icons.height),
-        //   onPressed: (){
-        //     // Dummy();
-        //     // _updateState();
-        //   },
-        // ),
         body: Stack(
           children: [
-
             Container(
               height: h,
               width: w,
@@ -237,7 +156,6 @@ class _GameHomeState extends State<GameHome> {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
-
               children: [
                 Center(),
                 Container(
@@ -264,30 +182,16 @@ class _GameHomeState extends State<GameHome> {
                             child: Image.asset('assets/rather.png', fit: BoxFit.contain,),
                           )
                         ),
-                        // Image.asset('assets/wouldyou.png', fit: BoxFit.contain,),
-                        // Image.asset('assets/rather.png'),
                       ],
                     )
                 ),
-                // Container(
-                //     width: 0.9*w,
-                //     height: h/6,
-                //     color: Colors.lightBlue,
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         Center(),
-                //         Text("Would you rather..."),
-                //       ],
-                //     )
-                // ),
                 Card(
                   child: Container(
                     width: 0.9*w,
                     height: h/3.5,
                     color: Colors.black,
                     child: (!show)?
-                    AnimatedButton(
+                      AnimatedButton(
                       width: 0.9*w,
                       height: h/3.5,
                       color: Colors.blue,
@@ -296,7 +200,6 @@ class _GameHomeState extends State<GameHome> {
                         textScaleFactor: 2,
                         textAlign: TextAlign.center,
                       ),
-                      // child: Text(_blueText, textScaleFactor: 3, textAlign: TextAlign.center,),
                       onPressed: (){
                         _buttonPressed("blue", _docID);
                         FirebaseAnalytics().logEvent(name: 'click',
@@ -314,7 +217,6 @@ class _GameHomeState extends State<GameHome> {
                         Future.delayed(Duration(milliseconds: 100), (){
                           _updateState();
                         });
-                        print("Blue Clicked");
                       },
                     ):
                       Card(
@@ -350,7 +252,7 @@ class _GameHomeState extends State<GameHome> {
                     height: h/3.5,
                     color: Colors.black,
                     child: (!show)?
-                    AnimatedButton(
+                      AnimatedButton(
                       shadowDegree: ShadowDegree.light,
                       width: 0.9*w,
                       height: h/3.5,
@@ -377,10 +279,9 @@ class _GameHomeState extends State<GameHome> {
                         Future.delayed(Duration(milliseconds: 100), (){
                           _updateState();
                         });
-                        print("Red Clicked");
                       },
                     ):
-                    Card(
+                      Card(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)
                       ),
@@ -405,36 +306,8 @@ class _GameHomeState extends State<GameHome> {
                         ),
                       ),
                     )
-                    // AnimatedButton(
-                    //   enabled: false,
-                    //   shadowDegree: ShadowDegree.light,
-                    //   width: 0.9*w,
-                    //   height: h/3.5,
-                    //   color: Colors.red,
-                    //   child: Column(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //     children: [
-                    //       Center(),
-                    //       Text(_redText,
-                    //         style: GoogleFonts.aladin(textStyle: TextStyle(fontWeight: FontWeight.bold)),
-                    //         textScaleFactor: 1.6,
-                    //         textAlign: TextAlign.center,
-                    //       ),
-                    //       Text("${((_redClicks)*100/(_blueClicks+_redClicks)).toStringAsFixed(2)}%", textScaleFactor: 1.4,),
-                    //       Slider(w,_widthr,false),
-                    //     ],
-                    //   ),
-                    //   onPressed: (){
-                    //     _redClicks++;
-                    //     setState(() {
-                    //
-                    //     });
-                    //     print("Red Clicked");
-                    //   },
-                    // ),
                   ),
                 ),
-
                 Card(
                   child: Container(
                     width: 0.4*w,
@@ -448,13 +321,11 @@ class _GameHomeState extends State<GameHome> {
                       color: Colors.yellow,
                       child: Text("Next", style: TextStyle(fontWeight: FontWeight.bold),),
                       onPressed: (){
-                        // show = false;
                         _nextAvailable = false;
                         setState(() {
 
                         });
                         _getNew();
-                        print("Next Clicked");
                       },
                     ),
                   ),
@@ -564,28 +435,19 @@ void Dummy()async{
     int kk = s.indexOf(" or ");
     String one = s.substring(0,kk);
     String two = s.substring(kk+4);
-    print(one);
-    print(two);
     one = '${one[0].toUpperCase()}${one.substring(1)}';
     two = '${two[0].toUpperCase()}${two.substring(1)}';
     two = two.replaceAll('?','');
     r.add(two); b.add(one);
   }
   b.removeAt(0); r.removeAt(0);
-  print(b);
-  print(r);
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   int current = 100;
 
-
-
-
   for(int i=0; i<b.length; i++) {
-    print("current i: $i");
     await _firestore.collection('values').doc('stats').get().then((value) {
       current = value.get('docs');
-      print("values got at: $i = $current");
     });
 
     await _firestore.collection('questions').add({
@@ -598,7 +460,6 @@ void Dummy()async{
           .millisecondsSinceEpoch,
       'no': current,
     }).then((value) {
-      print(value.id);
       _firestore.collection('questions').doc(value.id).update({
         'id': value.id,
       });
@@ -606,33 +467,10 @@ void Dummy()async{
         'docs': FieldValue.increment(1),
       }).then((value) async {
 
-        print("data added successfully at $i = $current");
         await _firestore.collection('values').doc('stats').get().then((value) {
           current = value.get('docs');
         });
       });
     });
-
-
-    // await _firestore.collection('questions').add({
-    //   'red': _redController.text,
-    //   'blue': _blueController.text,
-    //   'redClicks': int.parse(_redClickController.text),
-    //   'blueClicks': int.parse(_blueClickController.text),
-    //   'timestamp': DateTime.now().millisecondsSinceEpoch,
-    //   'no': int.parse(_docController.text),
-    // }).then((value) {
-    //   print(value.id);
-    //   _firestore.collection('questions').doc(value.id).update({
-    //     'id': value.id,
-    //   });
-    //   _firestore.collection('values').doc('stats').update({
-    //     'docs': FieldValue.increment(1),
-    //   }).then((value) {
-    //     _getDoc2();
-    //   });
-
-
-    // two[0] = two[0].toUpperCase();
   }
 }
